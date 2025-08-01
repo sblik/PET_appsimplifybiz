@@ -1,9 +1,9 @@
 <?php
 /**
- * Template Name: SMPLFY Markets
+ * Template Name: SMPLFY R&D
  * Version: 0.2
- * Description: PDF version of business target market
- * Author: Andre Nell
+ * Description: PDF version of R&D
+ * Author: Thomas Picolo-Donnelly
  * Author URI: https://simplifybiz.com
  * Group: SMPLFY
  * License: GPLv2
@@ -38,22 +38,19 @@ $upload_dir   = wp_upload_dir();
 $template_dir = trailingslashit($upload_dir['basedir']) . 'PDF_EXTENDED_TEMPLATES/';
 
 // Declare global variables
-global $variables_strategy, $markets_entry_array;
+global $variables_r_and_d;
 
 // Initialize globals to avoid undefined variable issues
-$variables_strategy  = [];
-$markets_entry_array = [];
-
+$variables_r_and_d = [];
 // File paths (models and views)
 $model_files = [
-    'Strategy Variables'      => $template_dir . 'model/strategy.php',
-    'Target Market Variables' => $template_dir . 'model/markets.php',
+    'R and D Variables' => $template_dir . 'model/r_and_d.php',
 ];
 
 $view_files = [
     'Styles View'  => $template_dir . 'view/styles.php',
     'Header View'  => $template_dir . 'view/header.php',
-    'Markets View' => $template_dir . 'view/markets.php',
+    'R and D View' => $template_dir . 'view/r_and_d.php',
     'Footer View'  => $template_dir . 'view/footer.php',
 ];
 
@@ -72,33 +69,30 @@ function safe_include($filepath, $label = '', $vars = [])
 }
 
 // Load model files in correct order: strategy.php MUST come first
-safe_include($model_files['Strategy Variables'], 'Strategy Variables', [
+safe_include($model_files['R and D Variables'], 'R and D Variables', [
     'form_data' => $form_data,
 ]);
 
 // Load remaining model files, passing globals
 foreach ($model_files as $label => $file) {
-    if ($label === 'Strategy Variables') {
+    if ($label === 'R and D Variables') {
         continue;
     }
     safe_include($file, $label, [
-        'form_data'           => $form_data,
-        'variables_strategy'  => $variables_strategy,
-        'markets_entry_array' => $markets_entry_array,
+        'form_data'         => $form_data,
+        'variables_r_and_d' => $variables_r_and_d,
     ]);
 }
 
 // Log globals for debugging
 SMPLFY_Log::info('Global variables after models', [
-    'variables_strategy'  => $variables_strategy,
-    'markets_entry_array' => $markets_entry_array,
+    'variables_r_and_d' => $variables_r_and_d,
 ]);
 
 // Load views, passing globals
 foreach ($view_files as $label => $file) {
     safe_include($file, $label, [
-        'form_data'           => $form_data,
-        'variables_strategy'  => $variables_strategy,
-        'markets_entry_array' => $markets_entry_array,
+        'form_data'         => $form_data,
+        'variables_r_and_d' => $variables_r_and_d,
     ]);
 }
